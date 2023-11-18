@@ -12,17 +12,23 @@ def page_initial():
     return None
 
 def set_api_key():
-    load_dotenv()
+
     with st.sidebar:
         user_key = st.text_input("Your OpenAI API key: ", key = "user_key")
+        openai.api_key = user_key
         if user_key:
-            if user_key == os.getenv('OPENAI_API_KEY'):
+            try:
+                response = openai.Completion.create(
+                engine="davinci",
+                prompt="This is a test.",
+                max_tokens=1)
+            except:
+                st.warning("Failed! \n OpenAI API key is not valid! Refresh the page and retry", icon= "⚠")
+                exit(1)
+            else:
                 st.write("Success! ")
                 return user_key
-            else:
-                st.warning("Failed! \nAdd your OPENAI_API_KEY in the .env file first and retry!", icon= "⚠")
-                exit(1)
-
+    
 def model(user_key):
     return ChatOpenAI(model_name='gpt-3.5-turbo',temperature=0.5, openai_api_key=user_key)
 
