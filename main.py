@@ -8,8 +8,13 @@ from streamlit_chat import message
 def page_initial():
     """streamlit initial page
     """
+    st.set_page_config(
+    page_title="Birdy App",
+    page_icon="🦜",
+    layout="wide",
+    initial_sidebar_state="expanded")
     st.title("Hey! My name is Birdy 😊")
-    st.title("How can I help you?")
+    st.header("How can I help you?")
     # message('Hey! My name is Birdy 😊 \n\nHow can I help you?', avatar_style='bottts')
     # st.image('Logo/Political Banter-logos_transparent.png')
     return None
@@ -70,7 +75,9 @@ def display():
         if i % 2 == 0:
             message(msg.content, is_user=True, key=str(i) + '_user', avatar_style='no-avatar')
         else:
-            message(msg.content, is_user=False, key=str(i) + '_ai', avatar_style='bottts')
+            message(msg.content, is_user=False, key=str(i) + '_ai', avatar_style="no-avatar")
+            #with st.chat_message('Assistant', avatar="🦜"):
+                #st.write(msg.content)
 
 def main():
     page_initial() # streamlit initial page
