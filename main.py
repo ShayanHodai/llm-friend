@@ -15,17 +15,16 @@ def page_initial():
     initial_sidebar_state="expanded")
     st.title("Hey! My name is Birdy 😊")
     st.header("How can I help you?")
-    # message('Hey! My name is Birdy 😊 \n\nHow can I help you?', avatar_style='bottts')
-    # st.image('Logo/Political Banter-logos_transparent.png')
-    return None
-
-def set_api_key():
-    """check user OpenAI API key
-    """
     with st.sidebar:
         st.title("About Birdy App 🦜")
         st.header("Your 24/7 available LLM firend!")
         st.markdown("Birdy is an application with the intention of being a considerate friend for everyone. The model has been built using OpenAI's gpt-3.5-turbo")
+    return None
+
+def user_API():
+    """check user OpenAI API key
+    """
+    with st.sidebar:
         user_key = st.text_input("Your OpenAI API key: ", key = "user_key")
         openai.api_key = user_key
         if user_key: 
@@ -39,6 +38,10 @@ def set_api_key():
                 exit(1)
             else:
                 st.write("Success! ")
+                model = st.radio(
+                "Which GenAI model would you like to use?",
+                ["Fine-Tuned Model","Default Model"],
+                captions = ["Includes Few Shot Prompts","Default Prompts"])
                 return user_key
     
 def model(user_key):
@@ -76,12 +79,11 @@ def display():
             message(msg.content, is_user=True, key=str(i) + '_user', avatar_style='no-avatar')
         else:
             message(msg.content, is_user=False, key=str(i) + '_ai', avatar_style="no-avatar")
-            #with st.chat_message('Assistant', avatar="🦜"):
-                #st.write(msg.content)
 
 def main():
     page_initial() # streamlit initial page
-    user_key = set_api_key() # check user OpenAI API key
+    #user_key = set_api_key() # check user OpenAI API key
+    user_key = user_API()
     if user_key:   
         llm = model(user_key) # llm selection
         user_input = user_msg() # user message
